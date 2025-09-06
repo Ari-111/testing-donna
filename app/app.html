@@ -3,33 +3,95 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Current Time</title>
+<title>Analog Clock</title>
 <style>
-  body {
+  body, html {
+    height: 100%;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #fff;
+    background: #fff;
   }
-  #time {
-    font-weight: bold;
-    font-size: 3rem;
-    color: red;
+  .clock {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    border: 15px solid red; /* red strap */
+    border-radius: 50%;
+    background-image: url('https://i.imgur.com/K5oVZxX.jpg'); /* Sydney Sweeney image */
+    background-size: cover;
+    background-position: center;
+  }
+  .hand {
+    position: absolute;
+    width: 50%;
+    background: black;
+    top: 50%;
+    transform-origin: 100%;
+    transform: rotate(90deg);
+    transition: all 0.05s cubic-bezier(0.4, 2.3, 0.3, 1);
+  }
+  .hour {
+    height: 6px;
+    left: 50%;
+    background: black;
+    z-index: 3;
+  }
+  .minute {
+    height: 4px;
+    left: 50%;
+    background: black;
+    z-index: 2;
+  }
+  .second {
+    height: 2px;
+    left: 50%;
+    background: red;
+    z-index: 1;
+  }
+  .center {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: black;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
   }
 </style>
-<script>
-  function updateTime() {
-    const now = new Date();
-    const timeString = now.toLocaleTimeString();
-    document.getElementById('time').textContent = timeString;
-  }
-  setInterval(updateTime, 1000);
-  window.onload = updateTime;
-</script>
 </head>
 <body>
-  <div id="time"></div>
+<div class="clock">
+  <div class="hand hour" id="hour"></div>
+  <div class="hand minute" id="minute"></div>
+  <div class="hand second" id="second"></div>
+  <div class="center"></div>
+</div>
+<script>
+  const hourHand = document.getElementById('hour');
+  const minuteHand = document.getElementById('minute');
+  const secondHand = document.getElementById('second');
+
+  function setTime() {
+    const now = new Date();
+    const seconds = now.getSeconds();
+    const minutes = now.getMinutes();
+    const hours = now.getHours();
+
+    const secondsDegree = ((seconds / 60) * 360) + 90;
+    const minutesDegree = ((minutes / 60) * 360) + ((seconds/60)*6) + 90;
+    const hoursDegree = ((hours / 12) * 360) + ((minutes/60)*30) + 90;
+
+    secondHand.style.transform = `rotate(${secondsDegree}deg)`;
+    minuteHand.style.transform = `rotate(${minutesDegree}deg)`;
+    hourHand.style.transform = `rotate(${hoursDegree}deg)`;
+  }
+
+  setInterval(setTime, 1000);
+  setTime();
+</script>
 </body>
 </html>
