@@ -5,52 +5,54 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Analog Clock</title>
 <style>
-  body, html {
-    height: 100%;
-    margin: 0;
+  body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #fff;
+    height: 100vh;
+    background: #f0f0f0;
+    margin: 0;
   }
   .clock {
-    position: relative;
     width: 300px;
     height: 300px;
     border: 15px solid red; /* red strap */
     border-radius: 50%;
-    background-image: url('https://i.imgur.com/K5oVZxX.jpg'); /* Sydney Sweeney image */
+    position: relative;
+    background: url('https://i.ibb.co/fd1wBHvt/download-2.jpg') no-repeat center center;
     background-size: cover;
-    background-position: center;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
   }
   .hand {
     position: absolute;
-    width: 50%;
+    bottom: 50%; /* Align bottom center of hand to center of clock */
+    left: 50%;
+    transform-origin: bottom center;
     background: black;
-    top: 50%;
-    transform-origin: 100%;
-    transform: rotate(90deg);
-    transition: all 0.05s cubic-bezier(0.4, 2.3, 0.3, 1);
+    border-radius: 6px;
   }
   .hour {
-    height: 6px;
-    left: 50%;
-    background: black;
+    width: 8px;
+    height: 70px;
+    background: #000;
     z-index: 3;
+    transform-origin: bottom center;
   }
   .minute {
-    height: 4px;
-    left: 50%;
-    background: black;
+    width: 6px;
+    height: 100px;
+    background: #333;
     z-index: 2;
+    transform-origin: bottom center;
   }
   .second {
-    height: 2px;
-    left: 50%;
+    width: 2px;
+    height: 120px;
     background: red;
     z-index: 1;
+    transform-origin: bottom center;
   }
-  .center {
+  .center-point {
     position: absolute;
     width: 20px;
     height: 20px;
@@ -64,34 +66,30 @@
 </style>
 </head>
 <body>
-<div class="clock">
-  <div class="hand hour" id="hour"></div>
-  <div class="hand minute" id="minute"></div>
-  <div class="hand second" id="second"></div>
-  <div class="center"></div>
-</div>
+  <div class="clock">
+    <div class="hand hour" id="hour-hand"></div>
+    <div class="hand minute" id="minute-hand"></div>
+    <div class="hand second" id="second-hand"></div>
+    <div class="center-point"></div>
+  </div>
 <script>
-  const hourHand = document.getElementById('hour');
-  const minuteHand = document.getElementById('minute');
-  const secondHand = document.getElementById('second');
-
-  function setTime() {
+  function updateClock() {
     const now = new Date();
     const seconds = now.getSeconds();
     const minutes = now.getMinutes();
     const hours = now.getHours();
 
-    const secondsDegree = ((seconds / 60) * 360) + 90;
-    const minutesDegree = ((minutes / 60) * 360) + ((seconds/60)*6) + 90;
-    const hoursDegree = ((hours / 12) * 360) + ((minutes/60)*30) + 90;
+    const secondsDegrees = ((seconds / 60) * 360) + 90;
+    const minutesDegrees = ((minutes / 60) * 360) + ((seconds/60)*6) + 90;
+    const hoursDegrees = ((hours / 12) * 360) + ((minutes/60)*30) + 90;
 
-    secondHand.style.transform = `rotate(${secondsDegree}deg)`;
-    minuteHand.style.transform = `rotate(${minutesDegree}deg)`;
-    hourHand.style.transform = `rotate(${hoursDegree}deg)`;
+    document.getElementById('second-hand').style.transform = `rotate(${secondsDegrees}deg)`;
+    document.getElementById('minute-hand').style.transform = `rotate(${minutesDegrees}deg)`;
+    document.getElementById('hour-hand').style.transform = `rotate(${hoursDegrees}deg)`;
   }
 
-  setInterval(setTime, 1000);
-  setTime();
+  setInterval(updateClock, 1000);
+  updateClock();
 </script>
 </body>
 </html>
