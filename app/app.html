@@ -11,21 +11,25 @@
     align-items: center;
     height: 100vh;
     margin: 0;
+    background-color: #fff;
+  }
+  #time {
     font-weight: bold;
-    font-size: 2em;
+    font-size: 3rem;
+    color: red;
   }
 </style>
+<script>
+  function updateTime() {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString();
+    document.getElementById('time').textContent = timeString;
+  }
+  setInterval(updateTime, 1000);
+  window.onload = updateTime;
+</script>
 </head>
 <body>
   <div id="time"></div>
-  <script>
-    function updateTime() {
-      const now = new Date();
-      const timeString = now.toLocaleTimeString();
-      document.getElementById('time').textContent = timeString;
-    }
-    setInterval(updateTime, 1000);
-    updateTime();
-  </script>
 </body>
 </html>
