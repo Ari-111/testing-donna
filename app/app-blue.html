@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analog Clock Blue Strap</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: #f0f0f0;
+  }
+  .clock {
+    width: 300px;
+    height: 300px;
+    border: 15px solid blue; /* blue strap */
+    border-radius: 50%;
+    position: relative;
+    background: url('https://i.ibb.co/pr9tZGSp/A-4378284-1718812370-9229.jpg') no-repeat center;
+    background-size: cover;
+  }
+  .hand {
+    position: absolute;
+    background: black;
+    top: 50%;
+    left: 50%;
+    transform-origin: bottom center;
+    transform: translateX(-50%) translateY(-100%);
+    border-radius: 6px;
+  }
+  .hour {
+    width: 8px;
+    height: 80px;
+    background: black;
+    z-index: 3;
+  }
+  .minute {
+    width: 6px;
+    height: 110px;
+    background: black;
+    z-index: 2;
+  }
+  .second {
+    width: 3px;
+    height: 140px;
+    background: red;
+    z-index: 1;
+  }
+  .center {
+    width: 15px;
+    height: 15px;
+    background: black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+  }
+</style>
+</head>
+<body>
+<div class="clock">
+  <div class="hand hour" id="hour"></div>
+  <div class="hand minute" id="minute"></div>
+  <div class="hand second" id="second"></div>
+  <div class="center"></div>
+</div>
+<script>
+  function updateClock() {
+    const now = new Date();
+    const seconds = now.getSeconds();
+    const minutes = now.getMinutes();
+    const hours = now.getHours();
+
+    const secondDeg = seconds * 6; // 360deg / 60s
+    const minuteDeg = minutes * 6 + seconds * 0.1; // 6deg per min + fraction
+    const hourDeg = ((hours % 12) / 12) * 360 + (minutes / 60) * 30; // 360deg / 12h + fraction
+
+    document.getElementById('second').style.transform = `translateX(-50%) translateY(-100%) rotate(${secondDeg}deg)`;
+    document.getElementById('minute').style.transform = `translateX(-50%) translateY(-100%) rotate(${minuteDeg}deg)`;
+    document.getElementById('hour').style.transform = `translateX(-50%) translateY(-100%) rotate(${hourDeg}deg)`;
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+</script>
+</body>
+</html>
